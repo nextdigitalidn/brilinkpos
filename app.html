@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS BRILink SaaS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hidden-section { display: none !important; }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800 font-sans">
+    
+    <!-- LOGIN PAGE -->
+    <div id="authPage" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden fade-in">
+             <div class="bg-blue-700 p-8 text-center text-white relative">
+                <h2 class="text-2xl font-bold relative z-10" id="authTitle">Login Agen</h2>
+                <p class="text-blue-200 text-xs mt-1 relative z-10">Aplikasi Kasir BRILink SaaS</p>
+            </div>
+            <form onsubmit="handleAuth(event)" class="p-6 space-y-4">
+                <div id="shopNameField" class="hidden-section">
+                    <label class="block text-xs font-bold text-gray-500 mb-1">NAMA TOKO</label>
+                    <input type="text" id="shopNameInput" class="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">EMAIL</label>
+                    <input type="email" id="emailInput" required class="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">PASSWORD</label>
+                    <input type="password" id="passwordInput" required class="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500">
+                </div>
+                <button type="submit" id="authBtn" class="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold transition shadow-lg">Masuk</button>
+            </form>
+            <div class="p-4 text-center bg-gray-50 border-t"><button onclick="toggleAuthMode()" id="authSwitchBtn" class="text-blue-700 font-bold ml-1 hover:underline">Daftar Baru</button></div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="appPage" class="hidden-section max-w-md mx-auto bg-white min-h-screen shadow-2xl relative pb-28">
+        <!-- Header -->
+        <div class="bg-blue-700 p-6 pb-14 text-white rounded-b-[2.5rem] shadow-lg relative z-0">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h1 class="text-lg font-bold" id="dashShopName">Toko Saya</h1>
+                    <p class="text-xs text-blue-200 flex items-center gap-1"><span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Online</p>
+                </div>
+                <button onclick="logout()" class="text-xs bg-white/20 hover:bg-white/30 p-2 rounded-lg transition backdrop-blur-sm">Keluar</button>
+            </div>
+            
+            <!-- INFO LANGGANAN (BARU) -->
+            <div id="subInfoContainer" class="bg-blue-800/50 border border-blue-500/30 p-2.5 rounded-xl backdrop-blur-sm flex justify-between items-center">
+                <!-- Diisi via JS -->
+                <span class="text-xs text-blue-100">Memuat status...</span>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="px-5 -mt-8 relative z-10 mb-2">
+            <div class="bg-white rounded-xl shadow-lg p-1.5 flex justify-between ring-1 ring-gray-100">
+                <button onclick="switchTab('pos')" id="tab-pos" class="flex-1 py-2 text-xs font-bold text-blue-700 bg-blue-50 rounded-lg transition">Kasir</button>
+                <button onclick="switchTab('history')" id="tab-history" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-lg transition hover:bg-gray-50">Riwayat</button>
+                <button onclick="switchTab('finance')" id="tab-finance" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-lg transition hover:bg-gray-50">Laporan</button>
+            </div>
+        </div>
+
+        <div class="p-5 pt-2">
+            <!-- View POS -->
+            <div id="view-pos" class="fade-in">
+                <!-- Mode Switcher -->
+                <div class="bg-gray-100 p-1 rounded-xl flex mb-3 shadow-inner">
+                    <button onclick="setMode('TOPUP')" id="btnModeTopup" class="flex-1 py-2 text-xs font-bold bg-white text-blue-700 rounded-lg shadow-sm transition">TOP UP</button>
+                    <button onclick="setMode('WITHDRAW')" id="btnModeTarik" class="flex-1 py-2 text-xs font-bold text-gray-500 rounded-lg transition">TARIK TUNAI</button>
+                </div>
+
+                <!-- KOLOM SEARCH -->
+                <div class="relative mb-4">
+                    <span class="absolute left-3 top-2.5 text-gray-400"><i class="fa-solid fa-search"></i></span>
+                    <input type="text" id="searchBox" oninput="renderWallets()" placeholder="Cari Bank / E-Wallet..." class="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition shadow-sm">
+                </div>
+
+                <!-- Grid Produk (Limit 6) -->
+                <div class="grid grid-cols-3 gap-3 mb-6" id="walletContainer">
+                    <div class="col-span-3 text-center text-sm text-gray-400 py-4">Loading produk...</div>
+                </div>
+                
+                <!-- Input Nominal -->
+                <div class="bg-white border-2 border-gray-100 p-4 rounded-2xl mb-4 focus-within:border-blue-300 focus-within:ring-4 focus-within:ring-blue-50 transition">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">NOMINAL</label>
+                    <div class="relative"><span class="absolute left-0 top-1 text-gray-400 font-bold text-lg">Rp</span><input type="number" id="inputNominal" class="w-full pl-8 py-1 text-2xl font-bold border-none outline-none placeholder-gray-200" placeholder="0" oninput="calculateTotal()"></div>
+                    <div class="flex gap-2 mt-3 overflow-x-auto no-scrollbar">
+                        <button onclick="setNominal(50000)" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 active:bg-blue-50 active:border-blue-300 transition">50rb</button>
+                        <button onclick="setNominal(100000)" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 active:bg-blue-50 active:border-blue-300 transition">100rb</button>
+                        <button onclick="setNominal(500000)" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 active:bg-blue-50 active:border-blue-300 transition">500rb</button>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 mb-20">
+                    <div class="w-1/2 bg-gray-50 p-3 rounded-xl border border-gray-200"><label class="text-[10px] font-bold text-gray-400 uppercase">ADMIN</label><input type="number" id="inputAdmin" class="w-full bg-transparent font-bold text-gray-600 outline-none" readonly value="0"></div>
+                    <div class="w-1/2 bg-green-50 p-3 rounded-xl border border-green-200"><label class="text-[10px] font-bold text-green-600 uppercase">PROFIT</label><input type="number" id="inputProfit" class="w-full bg-transparent font-bold text-green-700 outline-none" value="2000" oninput="calculateTotal()"></div>
+                </div>
+            </div>
+
+            <!-- View History -->
+            <div id="view-history" class="hidden-section fade-in">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-bold text-gray-700">Riwayat Terakhir</h2>
+                    <button onclick="loadHistory()" class="text-xs text-blue-600 hover:bg-blue-50 px-2 py-1 rounded transition"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                </div>
+                <div id="historyList" class="space-y-3 pb-10"></div>
+            </div>
+            
+            <!-- View Finance -->
+            <div id="view-finance" class="hidden-section fade-in">
+                <h2 class="font-bold text-gray-700 mb-4">Laporan Keuangan</h2>
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-5 text-white shadow-xl mb-5 relative overflow-hidden">
+                    <i class="fa-solid fa-coins absolute -right-4 -bottom-4 text-8xl opacity-10"></i>
+                    <div class="relative z-10">
+                        <div class="text-xs text-blue-200 mb-1">Profit Hari Ini</div>
+                        <div class="text-3xl font-bold mb-2" id="statTodayProfit">Rp 0</div>
+                        <div class="text-xs text-blue-100 bg-white/10 inline-block px-2 py-1 rounded">Omzet: <span id="statTodayOmzet">Rp 0</span></div>
+                    </div>
+                </div>
+                <h3 class="font-bold text-gray-600 text-sm mb-3">Produk Terlaris</h3>
+                <div id="walletStatsList" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <div id="stickyFooter" class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 z-50 md:absolute md:rounded-b-3xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:shadow-none">
+             <div class="max-w-md mx-auto flex justify-between items-center gap-4">
+                <div class="flex flex-col md:hidden"><span class="text-[10px] font-bold text-gray-400 uppercase">Total</span><span class="text-xl font-extrabold text-blue-800 leading-none" id="displayTotal">Rp 0</span></div>
+                <button onclick="saveTransaction()" id="btnSave" class="flex-1 bg-blue-700 hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-lg flex justify-center items-center gap-2 transition active:scale-95">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // GANTI LINK INI DENGAN WORKER KAMU !!!
+        const API_URL = "https://pos.hakiki.workers.dev";
+        // ============================================
+
+        let authToken = localStorage.getItem('pos_token');
+        let selectedWallet = null;
+        let isRegisterMode = false;
+        let currentMode = 'TOPUP'; 
+        let allProducts = []; 
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if(authToken) { showApp(); } 
+            else { document.getElementById('authPage').classList.remove('hidden-section'); }
+        });
+
+        // --- AUTH ---
+        function toggleAuthMode() {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('authTitle').innerText = isRegisterMode ? "Daftar Baru" : "Login Agen";
+            document.getElementById('authBtn').innerText = isRegisterMode ? "Daftar & Tunggu Approval" : "Masuk";
+            document.getElementById('authSwitchBtn').innerText = isRegisterMode ? "Sudah punya akun? Login" : "Daftar Baru";
+            document.getElementById('shopNameField').classList.toggle('hidden-section');
+        }
+
+        async function handleAuth(e) {
+            e.preventDefault();
+            const btn = document.getElementById('authBtn');
+            btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const shopName = document.getElementById('shopNameInput').value;
+            const endpoint = isRegisterMode ? '/api/register' : '/api/login';
+
+            try {
+                const res = await fetch(API_URL + endpoint, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email, password, shop_name: shopName })
+                });
+                const data = await res.json();
+                
+                if(!res.ok) throw new Error(data.error || "Gagal");
+
+                if(isRegisterMode) {
+                    alert("✅ Pendaftaran Berhasil! \n\nAkun Anda statusnya 'PENDING'.\nSilakan hubungi Admin untuk aktivasi akun.");
+                    toggleAuthMode();
+                } else {
+                    localStorage.setItem('pos_token', data.token);
+                    localStorage.setItem('pos_shop', data.shop_name);
+                    localStorage.setItem('pos_profit', data.default_profit);
+                    
+                    // SIMPAN INFO LANGGANAN
+                    if(data.subscription_until) {
+                        localStorage.setItem('pos_sub_until', data.subscription_until);
+                    } else {
+                        localStorage.removeItem('pos_sub_until'); // Hapus jika null (admin/free)
+                    }
+
+                    authToken = data.token;
+                    showApp();
+                }
+            } catch(e) { alert("❌ " + e.message); } 
+            finally { btn.disabled = false; btn.innerText = isRegisterMode ? "Daftar & Tunggu Approval" : "Masuk"; }
+        }
+
+        function logout() { localStorage.clear(); location.reload(); }
+
+        function showApp() {
+            document.getElementById('authPage').classList.add('hidden-section');
+            document.getElementById('appPage').classList.remove('hidden-section');
+            document.getElementById('dashShopName').innerText = localStorage.getItem('pos_shop');
+            document.getElementById('inputProfit').value = localStorage.getItem('pos_profit') || 2000;
+            
+            // --- LOGIKA TAMPILAN LANGGANAN ---
+            const subContainer = document.getElementById('subInfoContainer');
+            const subDateRaw = localStorage.getItem('pos_sub_until');
+            
+            if (subDateRaw) {
+                const subDate = new Date(subDateRaw);
+                const now = new Date();
+                const diffTime = subDate - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                let statusColor = "text-blue-100";
+                let statusText = `Aktif s.d ${subDate.toLocaleDateString('id-ID')}`;
+                let icon = "fa-check-circle";
+
+                // Logic Warna & Alert
+                if (diffDays <= 7 && diffDays > 0) {
+                    statusColor = "text-yellow-300 font-bold animate-pulse";
+                    statusText = `Berakhir ${diffDays} hari lagi!`;
+                    icon = "fa-exclamation-circle";
+                } else if (diffDays <= 0) {
+                    statusColor = "text-red-300 font-bold";
+                    statusText = "PAKET TELAH BERAKHIR";
+                    icon = "fa-times-circle";
+                }
+
+                subContainer.innerHTML = `
+                    <div class="flex items-center gap-2 ${statusColor} text-[10px]">
+                        <i class="fa-solid ${icon}"></i> <span>${statusText}</span>
+                    </div>
+                    <button onclick="extendSub()" class="bg-white text-blue-700 text-[10px] px-2 py-1 rounded-lg font-bold hover:bg-gray-100 shadow-sm transition">
+                        Perpanjang
+                    </button>
+                `;
+            } else {
+                // Jika tidak ada data langganan (Misal Admin atau User Lama)
+                subContainer.innerHTML = `
+                    <span class="text-[10px] text-white">Status: <span class="font-bold text-yellow-300">Free Trial / Unlimited</span></span>
+                    <button onclick="extendSub()" class="bg-white/20 text-white text-[10px] px-2 py-1 rounded hover:bg-white/30 transition">Info Paket</button>
+                `;
+            }
+            // ----------------------------------
+
+            fetchProducts(); 
+        }
+
+        // FUNGSI PERPANJANG (Ke WA Admin)
+        function extendSub() {
+            const shop = localStorage.getItem('pos_shop');
+            const msg = `Halo Admin,\n\nSaya ingin perpanjang langganan POS BRILink untuk toko: *${shop}*.\n\nMohon info paket dan rekening pembayaran. Terima kasih.`;
+            // GANTI NOMOR WA ADMIN DISINI
+            window.open(`https://wa.me/62817738880?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        async function fetchProducts() {
+            const container = document.getElementById('walletContainer');
+            try {
+                const res = await fetch(API_URL + '/api/products');
+                const json = await res.json();
+                allProducts = json.data;
+                renderWallets();
+            } catch(e) {
+                container.innerHTML = '<div class="col-span-3 text-red-500 text-center text-xs">Gagal memuat produk. Cek internet.</div>';
+            }
+        }
+
+        // --- POS (SMART SEARCH & LIMIT 6) ---
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('btnModeTopup').className = `flex-1 py-2 text-xs font-bold rounded-lg transition ${mode === 'TOPUP' ? 'bg-white text-blue-700 shadow-sm ring-1 ring-blue-100' : 'text-gray-500 hover:bg-gray-200'}`;
+            document.getElementById('btnModeTarik').className = `flex-1 py-2 text-xs font-bold rounded-lg transition ${mode === 'WITHDRAW' ? 'bg-white text-red-600 shadow-sm ring-1 ring-red-100' : 'text-gray-500 hover:bg-gray-200'}`;
+            document.getElementById('searchBox').value = ''; 
+            renderWallets();
+        }
+
+        // Helper: Usage Score
+        function getUsageScore(productName) {
+            const stats = JSON.parse(localStorage.getItem('pos_product_usage') || '{}');
+            return stats[productName] || 0;
+        }
+
+        function incrementUsageScore(productName) {
+            const stats = JSON.parse(localStorage.getItem('pos_product_usage') || '{}');
+            stats[productName] = (stats[productName] || 0) + 1;
+            localStorage.setItem('pos_product_usage', JSON.stringify(stats));
+        }
+
+        function renderWallets() {
+            const container = document.getElementById('walletContainer');
+            container.innerHTML = '';
+            
+            const searchText = document.getElementById('searchBox').value.toLowerCase();
+            
+            let filtered = allProducts.filter(p => p.type === currentMode);
+
+            if (searchText) {
+                filtered = filtered.filter(p => p.name.toLowerCase().includes(searchText));
+            } else {
+                filtered.sort((a, b) => getUsageScore(b.name) - getUsageScore(a.name));
+                filtered = filtered.slice(0, 6); // Limit 6
+            }
+
+            if(filtered.length === 0) {
+                container.innerHTML = '<div class="col-span-3 text-center text-xs text-gray-400 py-4">Tidak ada produk ditemukan.</div>';
+                return;
+            }
+
+            filtered.forEach((w, idx) => {
+                const isImage = w.icon.includes('http') || w.icon.includes('/api/image/');
+                const iconHtml = isImage 
+                    ? `<img src="${w.icon}" class="w-8 h-8 object-contain mb-2 rounded-lg bg-white p-0.5 shadow-sm">` 
+                    : `<i class="fa-solid ${w.icon} ${w.color} text-2xl mb-2"></i>`;
+
+                const el = document.createElement('div');
+                el.className = 'border rounded-xl p-3 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition bg-white border-gray-200';
+                el.innerHTML = `
+                    ${iconHtml}
+                    <span class="text-[10px] font-bold uppercase text-gray-600 text-center leading-tight">${w.name}</span>
+                `;
+                el.onclick = () => selectWallet(w, el);
+                container.appendChild(el);
+                
+                if(idx === 0 && (!selectedWallet || searchText)) selectWallet(w, el);
+            });
+        }
+
+        function selectWallet(w, el) {
+            selectedWallet = w;
+            const items = document.querySelectorAll('#walletContainer > div');
+            items.forEach(i => i.className = 'border rounded-xl p-3 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition bg-white border-gray-200');
+            if(el) {
+                const color = currentMode === 'TOPUP' ? 'border-blue-500 bg-blue-50 ring-1 ring-blue-200' : 'border-red-500 bg-red-50 ring-1 ring-red-200';
+                el.className = `border-2 ${color} rounded-xl p-3 flex flex-col items-center cursor-pointer shadow-md transform scale-105 transition`;
+            }
+            document.getElementById('inputAdmin').value = w.admin_fee;
+            calculateTotal();
+        }
+
+        function setNominal(n) { document.getElementById('inputNominal').value = n; calculateTotal(); }
+
+        function calculateTotal() {
+            const nom = parseInt(document.getElementById('inputNominal').value) || 0;
+            const adm = parseInt(document.getElementById('inputAdmin').value) || 0;
+            const prof = parseInt(document.getElementById('inputProfit').value) || 0;
+            const total = nom + adm + prof;
+            
+            document.getElementById('displayTotal').innerText = "Rp " + total.toLocaleString('id-ID');
+            const btn = document.getElementById('btnSave');
+            if(total > 0) {
+                const action = currentMode === 'TOPUP' ? 'Bayar' : 'Terima';
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> ${action} Rp ${total.toLocaleString('id-ID')}`;
+                btn.className = `flex-1 ${currentMode === 'TOPUP' ? 'bg-blue-700 hover:bg-blue-800' : 'bg-red-600 hover:bg-red-700'} text-white font-bold py-3.5 rounded-xl shadow-lg transition active:scale-95`;
+            } else {
+                btn.innerHTML = `Simpan Transaksi`;
+                btn.className = `flex-1 bg-gray-400 text-white font-bold py-3.5 rounded-xl transition cursor-not-allowed`;
+            }
+        }
+
+        async function saveTransaction() {
+            const nom = document.getElementById('inputNominal').value;
+            if(!nom || nom == 0) return alert("Isi nominal!");
+            const btn = document.getElementById('btnSave'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            const payload = {
+                ewallet: selectedWallet.name, nominal: parseInt(nom), admin: parseInt(document.getElementById('inputAdmin').value),
+                profit: parseInt(document.getElementById('inputProfit').value), total: parseInt(nom) + parseInt(document.getElementById('inputAdmin').value) + parseInt(document.getElementById('inputProfit').value),
+                type: currentMode
+            };
+            try {
+                const res = await fetch(API_URL + '/api/transaction', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+authToken }, body: JSON.stringify(payload) });
+                if(!res.ok) throw new Error("Gagal");
+                
+                incrementUsageScore(selectedWallet.name);
+                
+                alert("✅ Berhasil!"); 
+                document.getElementById('inputNominal').value = ''; 
+                document.getElementById('searchBox').value = ''; 
+                calculateTotal();
+                renderWallets(); 
+                
+            } catch(e) { alert(e.message); } finally { btn.disabled = false; calculateTotal(); }
+        }
+
+        // TABS
+        function switchTab(t) {
+            ['pos', 'history', 'finance'].forEach(tab => document.getElementById('view-'+tab).classList.add('hidden-section'));
+            document.getElementById('view-'+t).classList.remove('hidden-section');
+            
+            const tabs = ['pos', 'history', 'finance'];
+            tabs.forEach(tab => {
+                const btn = document.getElementById('tab-'+tab);
+                if(tab === t) btn.className = `flex-1 py-2 text-xs font-bold text-blue-700 bg-blue-50 rounded-lg transition shadow-sm ring-1 ring-blue-100`;
+                else btn.className = `flex-1 py-2 text-xs font-bold text-gray-400 rounded-lg transition hover:bg-gray-50`;
+            });
+
+            if(t === 'pos') document.getElementById('stickyFooter').classList.remove('hidden-section'); else document.getElementById('stickyFooter').classList.add('hidden-section');
+            if(t === 'history') loadHistory();
+            if(t === 'finance') loadFinancial();
+        }
+        
+        async function loadHistory() {
+             const list = document.getElementById('historyList');
+            list.innerHTML = '<div class="text-center text-gray-400 py-10"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
+            try {
+                const res = await fetch(API_URL + '/api/history', { headers: { 'Authorization': 'Bearer '+authToken } });
+                const json = await res.json();
+                if(!json.data || json.data.length === 0) { list.innerHTML = '<div class="text-center text-gray-300 py-10"><i class="fa-regular fa-folder-open text-3xl mb-2"></i><br>Belum ada transaksi</div>'; return; }
+                let html = '';
+                json.data.forEach(trx => {
+                    const isTopup = trx.type === 'TOPUP';
+                    const icon = isTopup ? 'fa-arrow-up text-blue-500' : 'fa-arrow-down text-red-500';
+                    const bg = isTopup ? 'bg-blue-50' : 'bg-red-50';
+                    html += `<div class="bg-white p-3 rounded-xl border border-gray-100 flex justify-between items-center shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full ${bg} flex items-center justify-center text-lg"><i class="fa-solid ${icon}"></i></div>
+                            <div><div class="font-bold text-gray-800 text-sm">${trx.ewallet_name}</div><div class="text-[10px] text-gray-400">${isTopup ? 'Top Up' : 'Tarik Tunai'} • ${new Date(trx.created_at).toLocaleString()}</div></div></div>
+                            <div class="text-right"><div class="font-bold text-gray-800 text-sm">Rp ${trx.total_price.toLocaleString()}</div><div class="text-[10px] text-green-600 font-bold bg-green-50 px-1.5 rounded inline-block">+${trx.merchant_fee.toLocaleString()}</div></div></div>`;
+                });
+                list.innerHTML = html;
+            } catch(e) { list.innerHTML = 'Gagal memuat history'; }
+        }
+
+        async function loadFinancial() {
+             const walletList = document.getElementById('walletStatsList');
+             document.getElementById('statTodayProfit').innerText = "...";
+            try {
+                const res = await fetch(API_URL + '/api/stats', { headers: { 'Authorization': 'Bearer '+authToken } });
+                const data = await res.json();
+                const fmt = (num) => "Rp " + (num || 0).toLocaleString('id-ID');
+                document.getElementById('statTodayProfit').innerText = fmt(data.today?.cuan);
+                document.getElementById('statTodayOmzet').innerText = fmt(data.today?.omzet);
+                if(data.wallets && data.wallets.length > 0) {
+                    let html = '';
+                    data.wallets.forEach(w => {
+                        html += `<div class="flex justify-between items-center bg-white p-3 rounded-lg border border-gray-100 shadow-sm"><div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600">${w.count}</span><span class="font-bold text-gray-700 text-sm">${w.ewallet_name}</span></div><span class="font-bold text-blue-700 text-xs">${fmt(w.total)}</span></div>`;
+                    });
+                    walletList.innerHTML = html;
+                } else { walletList.innerHTML = '<div class="text-center text-xs text-gray-400 py-2">Belum ada data penjualan.</div>'; }
+            } catch(e) { walletList.innerHTML = "Gagal loading."; }
+        }
+    </script>
+</body>
+</html>

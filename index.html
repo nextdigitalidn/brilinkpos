@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS BRILink by Next Digital Teknologi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
+        .anim-up { animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        html { scroll-behavior: smooth; }
+        
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked { right: 0; border-color: #3b82f6; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white text-lg shadow-lg">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-sm md:text-base leading-none text-slate-900">POS BRILink</h1>
+                        <p class="text-[9px] text-slate-500 font-semibold tracking-wide">BY NEXT DIGITAL</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex gap-6 text-sm font-medium text-slate-600">
+                    <a href="#fitur" class="hover:text-blue-700 transition">Fitur</a>
+                    <a href="#harga" class="hover:text-blue-700 transition">Harga</a>
+                    <a href="#faq" class="hover:text-blue-700 transition">FAQ</a>
+                </div>
+                <div class="flex gap-2">
+                    <a href="app.html" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-blue-700 transition border border-slate-200 rounded-lg hidden sm:block">Login</a>
+                    <a href="#harga" class="px-4 py-2 text-xs font-bold bg-blue-700 text-white rounded-lg hover:bg-blue-800 shadow-lg transition transform hover:-translate-y-0.5">
+                        Langganan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero-gradient pt-28 pb-16 px-4 relative overflow-hidden text-center">
+        <!-- Background Elements -->
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-blue-600/20 rounded-full blur-[100px] -z-1"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto anim-up">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-[10px] font-bold tracking-wider mb-4">
+                🚀 SOLUSI PEMBUKUAN AGEN
+            </span>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                Kelola Transaksi <br> <span class="text-blue-400">Lebih Cerdas & Akurat.</span>
+            </h1>
+            <p class="text-sm md:text-lg text-slate-300 mb-8 max-w-lg mx-auto">
+                Aplikasi kasir otomatis hitung fee admin & profit agen. Support HP & Laptop tanpa install.
+            </p>
+            
+            <div class="flex justify-center gap-3 mb-12">
+                <a href="#harga" class="px-6 py-3 bg-white text-blue-900 rounded-xl font-bold shadow-xl hover:bg-slate-100 transition text-sm">
+                    Lihat Paket
+                </a>
+                <a href="app.html" class="px-6 py-3 border border-white/30 text-white rounded-xl font-bold hover:bg-white/10 transition text-sm">
+                    Demo Gratis
+                </a>
+            </div>
+
+            <!-- App Mockup -->
+            <div class="relative mx-auto max-w-[260px] md:max-w-xs">
+                <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[20px] blur opacity-75"></div>
+                <img src="https://pub-7afb686602894f838fc7261f439a3887.r2.dev/POS%20BRILink%20SaaS.png" class="relative rounded-[18px] border-4 border-slate-800 shadow-2xl w-full" alt="Aplikasi POS">
+            </div>
+        </div>
+    </header>
+
+    <!-- FITUR SECTION -->
+    <section id="fitur" class="py-16 md:py-24 px-4 md:px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-10 md:mb-16">
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Kenapa Harus Pakai Ini?</h2>
+                <p class="text-sm md:text-base text-slate-500">Solusi untuk agen yang sering salah hitung dan bingung rekap omzet.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Fitur 1 -->
+                <div class="p-6 md:p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl transition hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-xl mb-4">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 text-slate-800">Hitung Otomatis</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Cukup masukkan nominal. Sistem otomatis menambahkan admin bank & fee agen.</p>
+                </div>
+                <!-- Fitur 2 -->
+                <div class="p-6 md:p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl transition hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600 text-xl mb-4">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 text-slate-800">Laporan Keuangan</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Pantau omzet, profit bersih, dan produk terlaris secara realtime. Data aman di cloud.</p>
+                </div>
+                <!-- Fitur 3 -->
+                <div class="p-6 md:p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl transition hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 text-xl mb-4">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 text-slate-800">Akses Fleksibel</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Bisa dibuka di HP, Tablet, atau Laptop. Ringan dan cepat tanpa install berat.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION (LANGGANAN) -->
+    <section id="harga" class="py-20 px-4 bg-slate-100">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-3">Pilih Paket Langganan</h2>
+            <p class="text-slate-500 mb-10 text-sm">Investasi kecil untuk pembukuan yang rapi selamanya.</p>
+
+            <!-- TOGGLE BULANAN / TAHUNAN -->
+            <div class="flex justify-center items-center mb-10 gap-4 select-none">
+                <span class="text-sm font-bold text-slate-600 cursor-pointer" onclick="document.getElementById('billingToggle').click()">Bulanan</span>
+                
+                <label for="billingToggle" class="flex items-center cursor-pointer relative">
+                    <input type="checkbox" id="billingToggle" class="sr-only" onchange="togglePricing()">
+                    <div class="w-14 h-8 bg-slate-300 rounded-full shadow-inner transition-colors duration-300" id="toggleBg"></div>
+                    <div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transition-transform duration-300" id="toggleDot"></div>
+                </label>
+                
+                <span class="text-sm font-bold text-slate-600 cursor-pointer flex items-center gap-2" onclick="document.getElementById('billingToggle').click()">
+                    Tahunan <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full border border-red-200">HEMAT 10%</span>
+                </span>
+            </div>
+
+            <!-- CARD HARGA -->
+            <div class="bg-white rounded-2xl p-8 shadow-xl max-w-sm mx-auto border-2 border-blue-500 relative overflow-hidden transform hover:-translate-y-1 transition duration-300">
+                <div class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">POPULAR</div>
+                
+                <h3 class="text-xl font-bold text-slate-700 mb-2">Paket PRO</h3>
+                <p class="text-xs text-slate-400 mb-6">Akses penuh ke semua fitur POS</p>
+                
+                <!-- Harga Display -->
+                <div class="flex justify-center items-end gap-1 mb-8">
+                    <span class="text-4xl font-extrabold text-slate-900 tracking-tight" id="priceDisplay">Rp 100rb</span>
+                    <span class="text-sm text-slate-500 mb-2 font-medium" id="periodDisplay">/bulan</span>
+                </div>
+
+                <ul class="text-left space-y-4 mb-8 text-sm text-slate-600 px-2">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-green-500"></i> Unlimited Transaksi</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-green-500"></i> Laporan Keuangan Harian</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-green-500"></i> Manajemen Produk & Fee</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-green-500"></i> Support Prioritas WA</li>
+                </ul>
+
+                <button onclick="openModal()" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-600/30 transition flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping"></i> Pilih Paket Ini
+                </button>
+                <p class="text-[10px] text-slate-400 mt-4">Aktif instan setelah pembayaran dikonfirmasi.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-16 px-4 bg-white">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold text-center mb-8 text-slate-800">Pertanyaan Umum</h2>
+            <div class="space-y-3">
+                <details class="bg-slate-50 p-4 rounded-xl cursor-pointer group open:bg-white open:shadow-md transition border border-transparent open:border-slate-100">
+                    <summary class="font-bold text-sm text-slate-700 flex justify-between items-center list-none">
+                        Apakah data saya aman?
+                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                    </summary>
+                    <p class="text-xs text-slate-500 mt-3 leading-relaxed">Sangat aman. Kami menggunakan server cloud (Cloudflare) dengan enkripsi tingkat tinggi. Data tidak disimpan di HP, jadi jika HP hilang, data tetap ada.</p>
+                </details>
+                <details class="bg-slate-50 p-4 rounded-xl cursor-pointer group open:bg-white open:shadow-md transition border border-transparent open:border-slate-100">
+                    <summary class="font-bold text-sm text-slate-700 flex justify-between items-center list-none">
+                        Bagaimana jika telat bayar langganan?
+                        <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
+                    </summary>
+                    <p class="text-xs text-slate-500 mt-3 leading-relaxed">Data Anda tetap aman, tapi Anda tidak bisa membuat transaksi baru sampai langganan diperpanjang.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-xs">
+        <p class="font-bold text-white mb-1">POS BRILink</p>
+        <p class="mb-4">by Next Digital Teknologi</p>
+        <p>&copy; 2025 All Rights Reserved.</p>
+    </footer>
+
+    <!-- ============================================== -->
+    <!-- MODAL REGISTER & PAYMENT (POPUP)               -->
+    <!-- ============================================== -->
+    <div id="paymentModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden anim-up">
+            
+            <!-- Header Modal -->
+            <div class="bg-blue-700 p-5 text-white flex justify-between items-center">
+                <h3 class="font-bold text-lg">Pendaftaran Agen</h3>
+                <button onclick="closeModal()" class="bg-white/20 hover:bg-white/30 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- STEP 1: Input Data (REGISTRASI) -->
+            <div id="step1" class="p-5">
+                <div class="bg-blue-50 text-blue-800 text-xs font-bold p-3 rounded-lg mb-4 text-center border border-blue-100" id="selectedPlanLabel">
+                    Paket Bulanan: Rp 100.000
+                </div>
+                
+                <form id="regForm" onsubmit="handleRegistration(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Nama Toko / Agen</label>
+                        <input type="text" id="regShopName" required class="w-full p-3 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="Contoh: BRILink Berkah">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Email Login</label>
+                        <input type="email" id="regEmail" required class="w-full p-3 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="email@anda.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Password</label>
+                        <input type="password" id="regPassword" required class="w-full p-3 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="******">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Nomor WhatsApp</label>
+                        <input type="number" id="regWA" required class="w-full p-3 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="08123456789">
+                    </div>
+                    
+                    <button type="submit" id="btnRegister" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl transition shadow-md mt-4">
+                        Daftar & Lanjut Bayar
+                    </button>
+                </form>
+            </div>
+
+            <!-- STEP 2: Instruksi Transfer -->
+            <div id="step2" class="p-5 hidden">
+                <div class="text-center mb-4">
+                    <div class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold mb-2">
+                        <i class="fa-solid fa-check-circle"></i> AKUN BERHASIL DIBUAT
+                    </div>
+                    <p class="text-xs text-slate-500">Silakan transfer nominal <b>PERSIS</b> (termasuk 3 digit terakhir) agar akun diaktifkan:</p>
+                </div>
+
+                <div class="bg-blue-50 border-2 border-blue-200 border-dashed rounded-xl p-4 text-center mb-5 relative">
+                    <div class="text-[10px] text-blue-600 font-bold uppercase tracking-wider mb-1">Total Transfer</div>
+                    <div class="text-3xl font-extrabold text-blue-800 tracking-tight" id="uniqueAmountDisplay">Rp 0</div>
+                    <p class="text-[9px] text-red-500 mt-1 italic font-semibold">*Mohon jangan dibulatkan!</p>
+                </div>
+
+                <div class="space-y-3 mb-5">
+                    <!-- Bank BCA -->
+                    <div class="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+                        <div class="flex items-center gap-3">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="h-3 object-contain">
+                            <div class="text-left">
+                                <p class="text-xs font-bold text-slate-800">BCA</p>
+                                <p class="text-sm font-mono text-slate-600 select-all">3210601014</p>
+                            </div>
+                        </div>
+                        <button onclick="copyText('3210601014')" class="text-xs bg-white border border-slate-300 px-2 py-1 rounded text-slate-600 hover:text-blue-600 font-bold shadow-sm">Salin</button>
+                    </div>
+                    
+                    <div class="text-left px-1">
+                        <p class="text-xs text-slate-500">Atas Nama: <b class="text-slate-800">A Rifqon Haqiqi</b></p>
+                    </div>
+                </div>
+
+                <button onclick="confirmWA()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-md">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Konfirmasi ke Admin
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const API_URL = "https://pos.hakiki.workers.dev"; // URL Worker Anda
+        const PRICE_MONTHLY = 100000;
+        const PRICE_YEARLY_DISCOUNT = 1080000; 
+        // ============================================
+
+        let isYearly = false;
+        let finalPrice = PRICE_MONTHLY;
+        let uniqueCode = 0; 
+
+        // Toggle Switch Logic
+        function togglePricing() {
+            const toggle = document.getElementById('billingToggle');
+            const dot = document.getElementById('toggleDot');
+            const bg = document.getElementById('toggleBg');
+            
+            isYearly = toggle.checked;
+
+            if (isYearly) {
+                dot.style.transform = 'translateX(100%)';
+                bg.classList.remove('bg-slate-300');
+                bg.classList.add('bg-blue-500');
+                document.getElementById('priceDisplay').innerText = "Rp 1.080rb";
+                document.getElementById('periodDisplay').innerText = "/tahun";
+                finalPrice = PRICE_YEARLY_DISCOUNT;
+            } else {
+                dot.style.transform = 'translateX(0)';
+                bg.classList.add('bg-slate-300');
+                bg.classList.remove('bg-blue-500');
+                document.getElementById('priceDisplay').innerText = "Rp 100rb";
+                document.getElementById('periodDisplay').innerText = "/bulan";
+                finalPrice = PRICE_MONTHLY;
+            }
+        }
+
+        // Modal Logic
+        function openModal() {
+            document.getElementById('paymentModal').classList.remove('hidden');
+            const label = isYearly ? "Paket Tahunan (Hemat 10%)" : "Paket Bulanan";
+            document.getElementById('selectedPlanLabel').innerText = `${label}: Rp ${finalPrice.toLocaleString('id-ID')}`;
+        }
+
+        function closeModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('step1').classList.remove('hidden');
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('regForm').reset();
+            }, 300);
+        }
+
+        // REGISTER LOGIC
+        async function handleRegistration(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnRegister');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mendaftarkan...';
+
+            const shopName = document.getElementById('regShopName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            try {
+                // Panggil API Register
+                const res = await fetch(API_URL + '/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, shop_name: shopName })
+                });
+                
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || "Gagal mendaftar");
+                }
+
+                // Jika sukses, lanjut ke step pembayaran
+                goToStep2();
+
+            } catch (err) {
+                alert("❌ Gagal: " + err.message + "\nJika email sudah terdaftar, silakan Login di menu App.");
+                btn.disabled = false;
+                btn.innerText = "Daftar & Lanjut Bayar";
+            }
+        }
+
+        function goToStep2() {
+            if(uniqueCode === 0) {
+                uniqueCode = Math.floor(Math.random() * (999 - 100 + 1) + 100);
+            }
+            const totalTransfer = finalPrice + uniqueCode;
+            document.getElementById('uniqueAmountDisplay').innerText = "Rp " + totalTransfer.toLocaleString('id-ID');
+            
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
+
+        function backToStep1() {
+            document.getElementById('step1').classList.remove('hidden');
+            document.getElementById('step2').classList.add('hidden');
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            alert("Nomor rekening berhasil disalin!");
+        }
+
+        function confirmWA() {
+            const shopName = document.getElementById('regShopName').value;
+            const email = document.getElementById('regEmail').value;
+            const wa = document.getElementById('regWA').value;
+            
+            // NOMOR WA ADMIN
+            const adminWA = "62817738880"; 
+            
+            const paketName = isYearly ? "TAHUNAN (Hemat 10%)" : "BULANAN";
+            const totalTransfer = finalPrice + uniqueCode;
+            
+            const message = `Halo Admin Next Digital Teknologi,%0A%0ASaya sudah mendaftar dan transfer untuk langganan POS BRILink.%0A%0ANama Toko: *${shopName}*%0AEmail Login: *${email}*%0AWA: ${wa}%0APaket: *${paketName}*%0ATotal Transfer: *Rp ${totalTransfer.toLocaleString('id-ID')}*%0A%0AMohon segera di-APPROVE agar akun aktif. Terima kasih.`;
+
+            window.open(`https://wa.me/${adminWA}?text=${message}`, '_blank');
+            closeModal();
+        }
+    </script>
+</body>
+</html>
